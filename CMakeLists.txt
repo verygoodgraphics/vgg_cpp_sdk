@@ -24,5 +24,6 @@ if (EMSCRIPTEN)
     -sEXPORT_NAME=createDemoModule 
     --no-entry
     --js-library ${CMAKE_SOURCE_DIR}/src/vgg_sdk.js
+    --pre-js ${CMAKE_SOURCE_DIR}/src/vgg_sdk_bridge.js
   )
 endif()

@@ -10,3 +10,7 @@
 
 int jsAdd1(int x) EM_IMPORT(jsAdd1);
 double jsAdd2(double x) EM_IMPORT(jsAdd2);
+
+// todo, import js class
+
+int jsAdd11(int x) EM_IMPORT(jsAdd11);

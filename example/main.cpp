@@ -19,6 +19,8 @@ EXTERN EMSCRIPTEN_KEEPALIVE int update(int x) {
   auto ret2 = jsAdd2(x);
   std::cout << "cpp: update, jsAdd2 result: " << ret2 << std::endl;
 
+  std::cout << "cpp: update, jsAdd11 result: " << jsAdd11(1) << std::endl;
+
   auto ret = ret1 + ret2;
   std::cout << "cpp: update, out, return: " << ret << std::endl;
   return ret;
