@@ -9,11 +9,10 @@
         function setupAndRun() {
             // Given
             createDemoModule().then(function (myInstance) {
-
                 // When
-                const ret = myInstance._update();
+                myInstance.update();
                 // Then
-                console.log('js: call wasm function update, result is: ', ret);
+                console.log('js: call wasm function update');
             });
         }
 

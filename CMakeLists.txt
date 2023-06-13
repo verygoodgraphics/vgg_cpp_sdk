@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(demo
   example/main.cpp
+  src/vgg_sdk.cpp
 )
 
 target_include_directories(demo PRIVATE
@@ -12,6 +13,8 @@ target_include_directories(demo PRIVATE
 )
 
 if (EMSCRIPTEN)
+  set(CMAKE_EXECUTABLE_SUFFIX ".mjs") # to export es6 module
+
   target_compile_options(demo PRIVATE 
     -fexceptions
   )
@@ -19,11 +22,10 @@ if (EMSCRIPTEN)
   target_link_options(demo PRIVATE
     -fexceptions
     -lembind
-    -sSTANDALONE_WASM
     -sMODULARIZE=1
     -sEXPORT_NAME=createDemoModule 
+    -O3 
+    -sASYNCIFY
     --no-entry
-    --js-library ${CMAKE_SOURCE_DIR}/src/vgg_sdk.js
-    --pre-js ${CMAKE_SOURCE_DIR}/src/vgg_sdk_bridge.js
   )
 endif()
