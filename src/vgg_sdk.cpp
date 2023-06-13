@@ -63,6 +63,61 @@ EM_ASYNC_JS(void, design_doc_delete_at, (EM_VAL sdk_url_val, EM_VAL path_val), {
   }
 });
 
+EM_ASYNC_JS(void, add_event_listener,
+            (EM_VAL sdk_url_val, EM_VAL path_val, EM_VAL type_val,
+             EM_VAL code_val),
+            {
+              const sdkUrl = Emval.toValue(sdk_url_val);
+              const {getVggSdk} = await import(sdkUrl);
+              const vggSdk = await getVggSdk();
+
+              const path = Emval.toValue(path_val);
+              const type = Emval.toValue(type_val);
+              const code = Emval.toValue(code_val);
+              try {
+                vggSdk.addEventListener(path, type, code);
+              } catch (err) {
+                console.error(err);
+              }
+            });
+
+EM_ASYNC_JS(void, remove_event_listener,
+            (EM_VAL sdk_url_val, EM_VAL path_val, EM_VAL type_val,
+             EM_VAL code_val),
+            {
+              const sdkUrl = Emval.toValue(sdk_url_val);
+              const {getVggSdk} = await import(sdkUrl);
+              const vggSdk = await getVggSdk();
+
+              const path = Emval.toValue(path_val);
+              const type = Emval.toValue(type_val);
+              const code = Emval.toValue(code_val);
+              try {
+                vggSdk.removeEventListener(path, type, code);
+              } catch (err) {
+                console.error(err);
+              }
+            });
+
+EM_ASYNC_JS(EM_VAL, get_event_listeners, (EM_VAL sdk_url_val, EM_VAL path_val),
+            {
+              const sdkUrl = Emval.toValue(sdk_url_val);
+              const {getVggSdk} = await import(sdkUrl);
+              const vggSdk = await getVggSdk();
+
+              const path = Emval.toValue(path_val);
+              try {
+                const codes = vggSdk.getEventListeners(path);
+                out('get event listenres, js sdk return value type: ',
+                    typeof codes);
+                return Emval.toHandle(codes);
+
+              } catch (err) {
+                console.error(err);
+                return Emval.toHandle(null);
+              }
+            });
+
 emscripten::val VggSdk::getDesignDocument() {
   auto doc = val::take_ownership(get_design_doc(m_sdk_url.as_handle()));
   return doc;
@@ -87,4 +142,36 @@ void VggSdk::designDocumentUpdateAt(const std::string &json_pointer,
 void VggSdk::designDocumentDeleteAt(const std::string &json_pointer) {
   val path_val{json_pointer};
   design_doc_delete_at(m_sdk_url.as_handle(), path_val.as_handle());
+}
+
+void VggSdk::addEventListener(const std::string &element_path,
+                              const std::string &event_type,
+                              const std::string &listener_code) {
+
+  val path_val{element_path};
+  val type_val{event_type};
+  val code_val{listener_code};
+
+  add_event_listener(m_sdk_url.as_handle(), path_val.as_handle(),
+                     type_val.as_handle(), code_val.as_handle());
+}
+
+void VggSdk::removeEventListener(const std::string &element_path,
+                                 const std::string &event_type,
+                                 const std::string &listener_code) {
+  val path_val{element_path};
+  val type_val{event_type};
+  val code_val{listener_code};
+
+  remove_event_listener(m_sdk_url.as_handle(), path_val.as_handle(),
+                        type_val.as_handle(), code_val.as_handle());
+}
+
+auto VggSdk::getEventListeners(const std::string &element_path)
+    -> ListenersType {
+  val path_val{element_path};
+
+  auto codes = val::take_ownership(
+      get_event_listeners(m_sdk_url.as_handle(), path_val.as_handle()));
+  return {};
 }
