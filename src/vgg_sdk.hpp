@@ -5,15 +5,13 @@
 
 #include <string>
 
-#ifdef __cplusplus
-#define EXTERN extern "C"
-#else
-#define EXTERN
-#endif
-
 namespace VggExport {
 class VggSdk {
+  emscripten::val m_sdk_url;
+
 public:
+  VggSdk(const char *sdkUrl) : m_sdk_url{sdkUrl} {}
+
   emscripten::val getDesignDocument();
 
   void designDocumentAddAt(const std::string &json_pointer,

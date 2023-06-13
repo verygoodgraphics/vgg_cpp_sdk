@@ -12,7 +12,7 @@ using namespace emscripten;
 
 // todo, pass event, context parameters
 void update() {
-  VggSdk vggSdk;
+  VggSdk vggSdk{"https://s3.vgg.cool/test/js/vgg-sdk.esm.js"};
 
   // auto design_doc = vggSdk.getDesignDocument();
   // design_doc["artboard"][0]["layers"][0]["childObjects"][1]["childObjects"][1]
