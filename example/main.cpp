@@ -20,9 +20,12 @@ void update() {
 
   std::srand(std::time(nullptr));
   auto alpha = static_cast<double>(std::rand()) / RAND_MAX;
-  vggSdk.designDocumentUpdateAt("/artboard/0/layers/0/childObjects/1/"
-                                "childObjects/1/style/fills/0/color/alpha",
-                                std::to_string(alpha));
+  auto path = "/artboard/0/layers/0/childObjects/1/childObjects/1/style/fills/"
+              "0/color/alpha";
+  vggSdk.designDocumentUpdateAt(path, std::to_string(alpha));
+
+  vggSdk.designDocumentAddAt(path, std::to_string(alpha));
+  vggSdk.designDocumentDeleteAt(path);
 }
 
 EMSCRIPTEN_BINDINGS(my_module) { function("update", &update); }
