@@ -14,9 +14,9 @@ using namespace emscripten;
 void update() {
   VggSdk vggSdk{"https://s3.vgg.cool/test/js/vgg-sdk.esm.js"};
 
-  // auto design_doc = vggSdk.getDesignDocument();
-  // design_doc["artboard"][0]["layers"][0]["childObjects"][1]["childObjects"][1]
-  //           ["style.fills"][0]["color"]["alpha"] = val(0.1);
+  // design document
+  auto design_doc = vggSdk.getDesignDocument();
+  std::cout << "design_doc size: " << design_doc.size() << std::endl;
 
   // edit design document test
   std::srand(std::time(nullptr));

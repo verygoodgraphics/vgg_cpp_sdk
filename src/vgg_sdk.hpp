@@ -13,7 +13,7 @@ class VggSdk {
 public:
   VggSdk(const char *sdkUrl) : m_sdk_url{sdkUrl} {}
 
-  emscripten::val getDesignDocument();
+  std::string getDesignDocument();
 
   void designDocumentAddAt(const std::string &json_pointer,
                            const std::string &value);

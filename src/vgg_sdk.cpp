@@ -14,8 +14,7 @@ EM_ASYNC_JS(EM_VAL, get_design_doc, (EM_VAL sdk_url_val), {
   const {DesignDocument} = await import(sdkUrl);
 
   let doc = await DesignDocument.getDesignDocument();
-
-  // doc = JSON.stringify(doc);
+  doc = JSON.stringify(doc);
 
   return Emval.toHandle(doc);
 });
@@ -117,9 +116,9 @@ EM_ASYNC_JS(EM_VAL, get_event_listeners, (EM_VAL sdk_url_val, EM_VAL path_val),
               }
             });
 
-emscripten::val VggSdk::getDesignDocument() {
+std::string VggSdk::getDesignDocument() {
   auto doc = val::take_ownership(get_design_doc(m_sdk_url.as_handle()));
-  return doc;
+  return doc.as<std::string>();
 }
 
 void VggSdk::designDocumentAddAt(const std::string &json_pointer,
