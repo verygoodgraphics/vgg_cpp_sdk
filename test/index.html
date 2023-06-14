@@ -4,16 +4,17 @@
 <head></head>
 
 <body>
-    <script type="text/javascript" src="../build.wasm/demo.js"></script>
     <script type="text/javascript">
-        function setupAndRun() {
+        async function setupAndRun() {
             // Given
-            createDemoModule().then(function (myInstance) {
-                // When
-                myInstance.update();
-                // Then
-                console.log('js: call wasm function update');
-            });
+            const { default: createDemoModule } = await import('../build.wasm/demo.mjs');
+            const myInstance = await createDemoModule();
+
+            // When
+            myInstance.update();
+
+            // Then
+            console.log('js: call wasm function update');
         }
 
         setupAndRun();
