@@ -108,12 +108,11 @@ EM_ASYNC_JS(EM_VAL, get_event_listeners, (EM_VAL sdk_url_val, EM_VAL path_val),
               const path = Emval.toValue(path_val);
               try {
                 const codes = vggSdk.getEventListeners(path);
-                out('get event listenres, js sdk return value type: ',
-                    typeof codes);
-                return Emval.toHandle(codes);
+                const codesJson = JSON.stringify(codes);
+                return Emval.toHandle(codesJson);
 
               } catch (err) {
-                console.error(err);
+                console.error('vggSdk.getEventListenrs exception: ', err);
                 return Emval.toHandle(null);
               }
             });
@@ -167,11 +166,10 @@ void VggSdk::removeEventListener(const std::string &element_path,
                         type_val.as_handle(), code_val.as_handle());
 }
 
-auto VggSdk::getEventListeners(const std::string &element_path)
-    -> ListenersType {
+std::string VggSdk::getEventListeners(const std::string &element_path) {
   val path_val{element_path};
 
-  auto codes = val::take_ownership(
+  auto codes_json_string_val = val::take_ownership(
       get_event_listeners(m_sdk_url.as_handle(), path_val.as_handle()));
-  return {};
+  return codes_json_string_val.as<std::string>();
 }

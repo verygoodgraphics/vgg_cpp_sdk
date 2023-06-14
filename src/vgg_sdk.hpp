@@ -11,9 +11,6 @@ class VggSdk {
   emscripten::val m_sdk_url;
 
 public:
-  using ListenersType =
-      std::unordered_map<std::string, std::vector<std::string>>;
-
   VggSdk(const char *sdkUrl) : m_sdk_url{sdkUrl} {}
 
   emscripten::val getDesignDocument();
@@ -33,7 +30,7 @@ public:
   void removeEventListener(const std::string &element_path,
                            const std::string &event_type,
                            const std::string &listener_code);
-  auto getEventListeners(const std::string &element_path) -> ListenersType;
+  std::string getEventListeners(const std::string &element_path);
 };
 
 } // namespace VggExport

@@ -31,13 +31,7 @@ void update() {
   // event listeners test
   auto element_path = "/fake/update_background_color";
   auto listenters = vggSdk.getEventListeners(element_path);
-
-  for (const auto &[type, codes] : listenters) {
-    std::cout << "listeners type is: " << type << std::endl;
-    for (const auto &code : codes) {
-      std::cout << "listener is: " << code << std::endl;
-    }
-  }
+  std::cout << "listeners are: " << listenters << std::endl;
 
   auto type = "click";
   auto code = "console.log('log from code added by sdk');";
